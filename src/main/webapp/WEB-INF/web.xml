@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                             http://java.sun.com/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <!-- ==============================
+         Welcome Page Configuration
+    =============================== -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file> <!-- Default landing page -->
+    </welcome-file-list>
+
+    <!-- ==============================
+         Database Configuration Parameters
+    =============================== -->
+    <context-param>
+        <param-name>jdbcURL</param-name>
+        <param-value>jdbc:mysql://localhost:3306/ecommerce_db</param-value>
+    </context-param>
+    <context-param>
+        <param-name>jdbcUsername</param-name>
+        <param-value>root</param-value>
+    </context-param>
+    <context-param>
+        <param-name>jdbcPassword</param-name>
+        <param-value>your_password</param-value> <!-- Change this to your actual DB password -->
+    </context-param>
+
+    <!-- Load Database Connection on Startup -->
+    <listener>
+        <listener-class>com.ecommerce.dao.DBConnection</listener-class>
+    </listener>
+
+    <!-- ==============================
+         Servlet Configuration
+    =============================== -->
+
+    <!-- ProductServlet: Handles product-related operations -->
+    <servlet>
+        <servlet-name>ProductServlet</servlet-name>
+        <servlet-class>com.ecommerce.servlet.ProductServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProductServlet</servlet-name>
+        <url-pattern>/products</url-pattern>
+    </servlet-mapping>
+
+    <!-- CartServlet: Handles shopping cart operations -->
+    <servlet>
+        <servlet-name>CartServlet</servlet-name>
+        <servlet-class>com.ecommerce.servlet.CartServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CartServlet</servlet-name>
+        <url-pattern>/cart</url-pattern>
+    </servlet-mapping>
+
+    <!-- AdminServlet: Handles admin dashboard and management -->
+    <servlet>
+        <servlet-name>AdminServlet</servlet-name>
+        <servlet-class>com.ecommerce.servlet.AdminServlet</servlet-class>
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
+
+    <!-- AuthServlet: Handles authentication and login -->
+    <servlet>
+        <servlet-name>AuthServlet</servlet-name>
+        <servlet-class>com.ecommerce.servlet.AuthServlet</servlet-class>
+        <load-on-startup>4</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthServlet</servlet-name>
+        <url-pattern>/auth</url-pattern>
+    </servlet-mapping>
+
+    <!-- CheckoutServlet: Manages checkout process -->
+    <servlet>
+        <servlet-name>CheckoutServlet</servlet-name>
+        <servlet-class>com.ecommerce.servlet.CheckoutServlet</servlet-class>
+        <load-on-startup>5</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CheckoutServlet</servlet-name>
+        <url-pattern>/checkout</url-pattern>
+    </servlet-mapping>
+
+    <!-- OrderServlet: Handles order processing -->
+    <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>com.ecommerce.servlet.OrderServlet</servlet-class>
+        <load-on-startup>6</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/order</url-pattern>
+    </servlet-mapping>
+
+    <!-- ==============================
+         Filters (Security & Logging)
+    =============================== -->
+
+    <!-- Authentication Filter (Protects certain pages) -->
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>com.ecommerce.filter.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern> <!-- Protects admin routes -->
+    </filter-mapping>
+
+    <!-- Logging Filter (Logs incoming requests) -->
+    <filter>
+        <filter-name>LoggingFilter</filter-name>
+        <filter-class>com.ecommerce.filter.LoggingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoggingFilter</filter-name>
+        <url-pattern>/*</url-pattern> <!-- Applies to all pages -->
+    </filter-mapping>
+
+    <!-- ==============================
+         Session Configuration
+    =============================== -->
+    <session-config>
+        <session-timeout>30</session-timeout> <!-- Session expires after 30 minutes -->
+    </session-config>
+
+    <!-- ==============================
+         Error Handling Pages
+    =============================== -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/404.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error/500.jsp</location>
+    </error-page>
+
+</web-app>
